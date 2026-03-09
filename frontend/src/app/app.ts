@@ -39,6 +39,7 @@ export class App implements OnInit {
   loading = false;
   activeCustomer: Customer | null = null;
   agentProcessLog: string[] = [];
+  activeTab: 'customers' | 'agent' = 'customers';
   
   ngOnInit(): void {
     this.fetchCustomers();

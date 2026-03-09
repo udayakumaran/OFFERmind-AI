@@ -8,8 +8,18 @@
     </div>
   </header>
 
+  <!-- Mobile Tab Switcher (only visible on small screens) -->
+  <div class="mobile-tabs">
+    <button class="tab-btn" [class.active]="activeTab === 'customers'" (click)="activeTab = 'customers'">
+      👥 Customers
+    </button>
+    <button class="tab-btn" [class.active]="activeTab === 'agent'" (click)="activeTab = 'agent'">
+      🧠 AI Agent
+    </button>
+  </div>
+
   <main class="dashboard">
-    <div class="left-panel">
+    <div class="left-panel" [class.hidden]="activeTab !== 'customers'">
       <h2>👥 Customer Pipeline</h2>
       
       <div class="stats-row">
@@ -42,16 +52,16 @@
           <div class="c-action">
             <button 
               class="btn-primary" 
-              (click)="generateOffer(c.id)"
+              (click)="generateOffer(c.id); activeTab = 'agent'"
               [disabled]="generatedOffers[c.id] != null">
-              {{ generatedOffers[c.id] ? 'Generated' : 'AI Generate' }}
+              {{ generatedOffers[c.id] ? '✅ Done' : '⚡ AI Generate' }}
             </button>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="right-panel">
+    <div class="right-panel" [class.hidden]="activeTab !== 'agent'">
       <h2>🧠 Multi-Agent Orchestrator</h2>
       
       <div class="agent-console glass">
@@ -62,7 +72,7 @@
           </div>
         </div>
         <div class="console-empty" *ngIf="agentProcessLog.length === 0">
-          Waiting for system input... Select a customer to ignite the pipeline.
+          Waiting for system input...<br>Select a customer to ignite the pipeline.
         </div>
       </div>
 
@@ -83,7 +93,7 @@
 
         <div class="message-box">
           <label>Generated Copy:</label>
-          <p>“{{ generatedOffers[activeCustomer.id].message }}”</p>
+          <p>"{{ generatedOffers[activeCustomer.id].message }}"</p>
         </div>
       </div>
     </div>
