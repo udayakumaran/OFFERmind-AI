@@ -1,0 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap');
+
+body {
+  margin: 0;
+  padding: 0;
+  background: radial-gradient(circle at top left, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  color: #fff;
+  font-family: 'Outfit', sans-serif;
+  min-height: 100vh;
+}

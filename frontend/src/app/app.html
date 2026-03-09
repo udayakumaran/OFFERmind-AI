@@ -1,0 +1,91 @@
+<div class="container">
+  <header class="glass-header">
+    <div class="logo">
+      <span class="pulse"></span> <strong>TelecomSaaS</strong> AI OS
+    </div>
+    <div class="user-info">
+      <div class="pill">Admin</div>
+    </div>
+  </header>
+
+  <main class="dashboard">
+    <div class="left-panel">
+      <h2>👥 Customer Pipeline</h2>
+      
+      <div class="stats-row">
+        <div class="stat-box glass">
+          <h3>Total Base</h3>
+          <p>{{ customers.length }}</p>
+        </div>
+        <div class="stat-box glass">
+          <h3>Offers Sent</h3>
+          <p>{{ (generatedOffers | keyvalue).length }}</p>
+        </div>
+      </div>
+
+      <div class="customer-list glass">
+        <div class="list-header">
+          <span>Name / Location</span>
+          <span>Usage</span>
+          <span>Action</span>
+        </div>
+        
+        <div class="list-item" *ngFor="let c of customers.slice(0, 8)" [class.active]="activeCustomer?.id === c.id">
+          <div class="c-info">
+            <strong>{{ c.name }}</strong>
+            <small>{{ c.location }}</small>
+          </div>
+          <div class="c-usage">
+            <span class="tag">GB: {{ c.data_gb | number:'1.0-0' }}</span>
+            <span class="tag">Min: {{ c.call_mins }}</span>
+          </div>
+          <div class="c-action">
+            <button 
+              class="btn-primary" 
+              (click)="generateOffer(c.id)"
+              [disabled]="generatedOffers[c.id] != null">
+              {{ generatedOffers[c.id] ? 'Generated' : 'AI Generate' }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="right-panel">
+      <h2>🧠 Multi-Agent Orchestrator</h2>
+      
+      <div class="agent-console glass">
+        <div class="console-header">LangGraph Multi-Agent WorkFlow</div>
+        <div class="console-body" *ngIf="agentProcessLog.length > 0">
+          <div class="log-line" *ngFor="let log of agentProcessLog; let i = index" [style.animationDelay]="i * 0.2 + 's'">
+            {{ log }}
+          </div>
+        </div>
+        <div class="console-empty" *ngIf="agentProcessLog.length === 0">
+          Waiting for system input... Select a customer to ignite the pipeline.
+        </div>
+      </div>
+
+      <div class="result-card glass" *ngIf="activeCustomer && generatedOffers[activeCustomer.id]">
+        <div class="ribbon">AI Approved</div>
+        <h3>Personalized Output for {{ activeCustomer.name }}</h3>
+        
+        <div class="offer-details">
+          <div class="detail-row">
+            <label>Offer Type:</label>
+            <span class="highlight">Tailored Recommendation #{{generatedOffers[activeCustomer.id].offer_id}}</span>
+          </div>
+          <div class="detail-row">
+            <label>Status:</label>
+            <span class="status-badge">{{ generatedOffers[activeCustomer.id].status }}</span>
+          </div>
+        </div>
+
+        <div class="message-box">
+          <label>Generated Copy:</label>
+          <p>“{{ generatedOffers[activeCustomer.id].message }}”</p>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
