@@ -42,6 +42,10 @@ export class App implements OnInit {
   
   ngOnInit(): void {
     this.fetchCustomers();
+    // Keep Render free-tier backend alive — ping every 10 minutes
+    setInterval(() => {
+      this.http.get(`${environment.apiUrl}/`).subscribe();
+    }, 10 * 60 * 1000);
   }
 
   fetchCustomers() {
